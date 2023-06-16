@@ -26,6 +26,7 @@
           <ul id="users"></ul>
         </div>
         <div class="chat-messages"></div>
+        
       </main>
       <div class="chat-form-container">
         <form id="chat-form">
@@ -35,6 +36,7 @@
             placeholder="Enter Message"
             required
             autocomplete="off"
+             onkeypress="processChange()"
           />
           <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
         </form>
@@ -49,5 +51,6 @@
     
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/main.js"></script>
+  
   </body>
 </html>

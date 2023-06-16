@@ -14,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-//Set static folder
+// Set static folder
 app.use(express.static(path.join(__dirname, "")));
 
 const botName = "ChatBot";
@@ -26,32 +26,38 @@ io.on("connection", (socket) => {
 
     socket.join(user.room);
 
-    //Welcome Current User
+    // Welcome Current User
     socket.emit("message", formatMessage(botName, "Welcome To Chat App"));
 
-    //BroadCast when a User Connects
+    // Broadcast when a User Connects
     socket.broadcast
       .to(user.room)
       .emit(
         "message",
         formatMessage(botName, `${user.username} has joined the chat`)
       );
-    //Send users and room info
+
+    // Send users and room info
     io.to(user.room).emit("roomUsers", {
       room: user.room,
       users: getRoomUsers(user.room),
     });
   });
 
-  //Listen for chatMessage
+  // Listen for chatMessage
   socket.on("chatMessage", (msg) => {
     const user = getCurrentUser(socket.id);
 
-    io.to(user.room).emit("message", formatMessage(user.username, msg));
+    // Get current time
+    const currentTime = new Date().toLocaleTimeString();
+
+    // Append current time to the chat message
+    // const message = formatMessage(user.username, `${msg}`);
+
+    io.to(user.room).emit("message", message);
   });
 
-  //Runs when client disconnects
-
+  // Runs when client disconnects
   socket.on("disconnect", () => {
     const user = userLeave(socket.id);
     if (user) {
@@ -59,13 +65,13 @@ io.on("connection", (socket) => {
         "message",
         formatMessage(botName, `${user.username} has left the chat`)
       );
-      //Send users and room info
+
+      // Send users and room info
       io.to(user.room).emit("roomUsers", {
         room: user.room,
         users: getRoomUsers(user.room),
       });
     }
-   
   });
 });
 
