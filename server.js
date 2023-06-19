@@ -49,7 +49,10 @@ io.on("connection", (socket) => {
     const user = getCurrentUser(socket.id);
 
     // Get current time
-    const currentTime = new Date().toLocaleTimeString();
+    const currentTime = new Date().toLocaleString("en-IN", {
+      timeZone: "India",
+      hour12: true,
+    });
 
     // Append current time to the chat message
     const message = formatMessage(user.username, `${currentTime} - ${msg}`);
