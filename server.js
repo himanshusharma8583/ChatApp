@@ -48,8 +48,11 @@ io.on("connection", (socket) => {
   socket.on("chatMessage", (msg) => {
     const user = getCurrentUser(socket.id);
 
-    
-    const message = formatMessage(user.username, `${msg}`);
+    // Get current time
+    const currentTime = new Date().toLocaleTimeString();
+
+    // Append current time to the chat message
+    const message = formatMessage(user.username, `${currentTime} - ${msg}`);
 
     io.to(user.room).emit("message", message);
   });
